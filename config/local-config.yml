@@ -1,0 +1,5 @@
+environment:
+  DB_CONNSTRING: ssm:/nestjsapisls/local/dbconnstring
+deployment:
+  SSM_PATH: /nestjsapisls
+  DDB_TABLE: UniqueIDGenerator

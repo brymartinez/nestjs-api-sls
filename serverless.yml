@@ -1,0 +1,66 @@
+service: NestJSAPISLS
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-iam-roles-per-function
+  - serverless-localstack
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment: ${file(config/${self:provider.stage}-config.yml):environment}
+  stage: ${opt:stage, 'local'}
+  region: ${opt:region, 'ap-southeast-1'}
+  endpointType: private
+  timeout: 30
+  memorySize: 512
+  deploymentBucket: localstack-packages
+  deploymentPrefix: local
+  stackName: ${self:provider.stage}${self:service}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource:
+            - 'arn:aws:ssm:*:*:${file(config/${self:provider.stage}-config.yml):deployment.SSM_PATH}/*'
+        - Effect: Allow
+          Action:
+            - dynamodb:BatchGet*
+            - dynamodb:DescribeStream
+            - dynamodb:DescribeTable
+            - dynamodb:Get*
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWrite*
+            - dynamodb:Delete*
+            - dynamodb:Update*
+            - dynamodb:PutItem
+          Resource:
+            - 'arn:aws:dynamodb:*:*:table/${file(config/${self:provider.stage}-config.yml):deployment.DDB_TABLE}/*'
+
+functions:
+  main:
+    description: Handler for generating configurations based on unique ID providers
+    handler: src/main.handler
+    timeout: 30
+    events:
+      - http:
+          path: /{any+}
+          method: any
+
+package:
+  excludeDevDependencies: true
+
+custom:
+  serverless-offline:
+    httpPort: 8089
+    noPrependStageInUrl: true
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+  environments:
+    local: Local

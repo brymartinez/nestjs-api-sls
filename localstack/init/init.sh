@@ -5,4 +5,4 @@ awslocal dynamodb create-table \
     --billing-mode PAY_PER_REQUEST \
     --region ap-southeast-1
 awslocal dynamodb put-item --table-name UniqueIDGenerator --item '{"UniqueIDSequence": { "S": "UniqueIDSequence" },"ABC": { "N": "1000" },"DEF": { "N": "3000" },"GHI": { "N": "500" }}' --region ap-southeast-1
-awslocal ssm put-parameter --name /localstack/connstring --value postgres://postgres:example@localhost:5432/postgres --region ap-southeast-1
+awslocal ssm put-parameter --name /nestjsapisls/local/connstring --value postgres://postgres:example@localhost:5432/postgres --region ap-southeast-1
