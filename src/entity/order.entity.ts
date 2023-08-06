@@ -11,7 +11,7 @@ export class Order {
   @PrimaryColumn()
   id: string;
   @Column()
-  type: 'LIMIT | MARKET';
+  type: 'LIMIT' | 'MARKET';
   @Column({ nullable: true })
   price?: string;
   @Column()

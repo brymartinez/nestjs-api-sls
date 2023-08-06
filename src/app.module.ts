@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './entity/order.entity';
 import { SSMConfigModule } from './infrastructure/ssm-config/ssm-config.module';
+import { UniqueIDGenerator } from './services/unique-id-generator/unique-id-generator';
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { SSMConfigModule } from './infrastructure/ssm-config/ssm-config.module';
     TypeOrmModule.forFeature([Order]),
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [UniqueIDGenerator],
 })
 export class AppModule {}

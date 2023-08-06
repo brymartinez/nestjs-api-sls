@@ -14,18 +14,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entity/order.entity';
 import { Repository } from 'typeorm';
 import { UpdateOrderDTO } from './dto/update-order.dto';
+import { UniqueIDGenerator } from './services/unique-id-generator/unique-id-generator';
 
 @Controller('v1')
 export class AppController {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
+    private readonly uniqueIdGenerator: UniqueIDGenerator,
   ) {}
 
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Body() body: CreateOrderDTO) {
-    return this.orderRepository.save(body);
+    const id = this.uniqueIdGenerator.createId(body.exchange);
+    return this.orderRepository.save({ ...body, id });
   }
 
   @Get()

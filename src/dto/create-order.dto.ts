@@ -2,7 +2,7 @@ import { IsNumberString, IsString } from 'class-validator';
 
 export class CreateOrderDTO {
   @IsString()
-  type: string;
+  type: 'LIMIT' | 'MARKET';
   @IsString()
   price?: string;
   @IsString()
