@@ -24,21 +24,21 @@ export class AppController {
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Body() body: CreateOrderDTO) {
-    return {};
+    return this.orderRepository.save(dto);
   }
 
   @Get()
   async get(@Param() id: string) {
-    return;
+    return this.orderRepository.findOneBy({ id });
   }
 
   @Patch()
   async update(@Body() body: any) {
-    return;
+    return this.orderRepository.update(body);
   }
 
   @Delete()
   async delete(@Param() id: string) {
-    return;
+    return this.orderRepository.delete({ id });
   }
 }

@@ -15,8 +15,8 @@ provider:
   endpointType: private
   timeout: 30
   memorySize: 512
-  deploymentBucket: localstack-packages
-  deploymentPrefix: local
+  deploymentBucket: ${file(config/${self:provider.stage}-config.yml):deployment.deploymentBucket}
+  deploymentPrefix: ${file(config/${self:provider.stage}-config.yml):deployment.deploymentPrefix}
   stackName: ${self:provider.stage}${self:service}
   iam:
     role:

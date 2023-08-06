@@ -4,10 +4,12 @@ import { SSMConfigService } from './infrastructure/ssm-config/ssm-config.service
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './entity/order.entity';
+import { SSMConfigModule } from './infrastructure/ssm-config/ssm-config.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    SSMConfigModule,
     TypeOrmModule.forRootAsync({
       useFactory: async (
         config: ConfigService,
@@ -22,10 +24,11 @@ import { Order } from './entity/order.entity';
         };
       },
       inject: [ConfigService, SSMConfigService],
+      imports: [ConfigModule, SSMConfigModule],
     }),
     TypeOrmModule.forFeature([Order]),
   ],
   controllers: [AppController],
-  providers: [SSMConfigService],
+  providers: [],
 })
 export class AppModule {}
