@@ -9,10 +9,11 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateOrderDTO } from './dto/create-config.dto';
+import { CreateOrderDTO } from './dto/create-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entity/order.entity';
 import { Repository } from 'typeorm';
+import { UpdateOrderDTO } from './dto/update-order.dto';
 
 @Controller('v1')
 export class AppController {
@@ -24,7 +25,7 @@ export class AppController {
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Body() body: CreateOrderDTO) {
-    return this.orderRepository.save(dto);
+    return this.orderRepository.save(body);
   }
 
   @Get()
@@ -33,8 +34,10 @@ export class AppController {
   }
 
   @Patch()
-  async update(@Body() body: any) {
-    return this.orderRepository.update(body);
+  @UsePipes(ValidationPipe)
+  async update(@Body() body: UpdateOrderDTO) {
+    const order = await this.orderRepository.findBy({ id: body.id });
+    return this.orderRepository.save(order);
   }
 
   @Delete()
