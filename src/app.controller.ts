@@ -6,22 +6,25 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import { CreateOrderDTO } from './dto/create-config.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Order } from './entity/order.entity';
+import { Repository } from 'typeorm';
 
-@Controller()
+@Controller('v1')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  constructor(
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
+  ) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   async create(@Body() body: CreateOrderDTO) {
-    return;
+    return {};
   }
 
   @Get()

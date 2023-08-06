@@ -9,6 +9,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 // List of Nestjs lazy imports
 const lazyImports = [
+  '@nestjs/microservices',
   '@nestjs/microservices/microservices-module',
   '@nestjs/websockets/socket-module',
   '@nestjs/platform-express',
@@ -37,7 +38,7 @@ module.exports = {
     path: path.join(__dirname, '.webpack'),
     filename: '[name].js',
   },
-  externals: [nodeExternals()],
+  externals: [],
   module: {
     rules: [
       {

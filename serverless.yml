@@ -40,6 +40,14 @@ provider:
             - dynamodb:PutItem
           Resource:
             - 'arn:aws:dynamodb:*:*:table/${file(config/${self:provider.stage}-config.yml):deployment.DDB_TABLE}/*'
+  apiGateway:
+    minimumCompressionSize: 1024
+    resourcePolicy:
+      - Effect: Allow
+        Principal: '*'
+        Action: execute-api:Invoke
+        Resource:
+          - execute-api:${self:provider.stage}/*/*
 
 functions:
   main:
